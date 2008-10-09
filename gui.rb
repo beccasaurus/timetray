@@ -22,7 +22,13 @@ SimpleTray.app 'TODO' do
   TimeTray.projects.each do |project|
     menu project.name do
       for task in project.tasks
+
         menu "#{ task }#{ (task.logs.empty?) ? '' : " (#{task.logs.count})" }" do
+
+          # re-set task, using the menu text ('task' doesn't make it into this context)
+          task = project.tasks.find_by_name self.get_text.sub(/ \(\d+\)/,'')
+
+          # stop or start this task
           item (task.active? ? 'Stop' : 'Start') do
             if task.active?
               task.stop!
@@ -30,6 +36,8 @@ SimpleTray.app 'TODO' do
               task.start!
             end
           end
+
+          # task log history
           unless task.logs.empty?
             ____
             task.logs.each do |log|
@@ -40,8 +48,10 @@ SimpleTray.app 'TODO' do
               end
             end
           end
-        end
-      end
+
+        end # task menu
+      end   # project menu
+
       ____ unless project.tasks.empty?
       new_task { project.tasks.create :name => prompt("New Task Name") }
     end
