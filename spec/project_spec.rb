@@ -45,4 +45,22 @@ describe Project do
     }.should change(Project, :count).from(0).to(1)
   end
 
+  it 'should have a list of current tasks' do
+    project = Project.create :name => 'w00t'
+    task1 = project.tasks.create :name => 'Task 1'
+    task2 = project.tasks.create :name => 'Task 2'
+    task3 = project.tasks.create :name => 'Task 3'
+
+    project.current_tasks.should be_empty
+    task2.start!
+    project.current_tasks.should_not be_empty
+    project.current_tasks.should include(task2)
+    task3.start!
+    project.current_tasks.should include(task3)
+    task3.stop!
+    project.current_tasks.should_not include(task3)
+    task2.stop!
+    project.current_tasks.should be_empty
+  end
+
 end

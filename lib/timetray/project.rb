@@ -8,4 +8,9 @@ class Project < ActiveRecord::Base
     tasks.reload
     task
   end
+
+  def current_tasks
+    tasks.reload
+    tasks.select &:active?
+  end
 end

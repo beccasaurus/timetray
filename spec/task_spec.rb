@@ -19,9 +19,6 @@ describe Task do
     Task.create( :name => 'Doing Stuff 2', :project => @project ).should be_valid
   end
 
-  it 'should have time logs'
-  
-  # this fucker is LONG ...
   it "should know whether it's currently 'active' based on when it's started / stopped" do
     task = Task.create :name => 'Doing Stuff', :project => @project
     task.should_not be_active
