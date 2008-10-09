@@ -13,4 +13,13 @@ class Project < ActiveRecord::Base
     tasks.reload
     tasks.select &:active?
   end
+
+  def duration
+    tasks.inject(0) {|total,task| total += task.duration }
+  end
+  alias total_time duration
+
+  def to_s
+    name
+  end
 end

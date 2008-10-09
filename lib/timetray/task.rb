@@ -19,9 +19,11 @@ class Task < ActiveRecord::Base
   end
   alias total_time duration
 
-  protected
-
   def current_log
     logs.select {|l| l.active? }.first # grab first one that's active
+  end
+
+  def to_s
+    name
   end
 end
